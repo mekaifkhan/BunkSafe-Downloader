@@ -1,0 +1,6 @@
+{
+  "name": "BunkSafe Landing Page",
+  "description": "Premium landing page for BunkSafe, the smart offline-first attendance tracker for college students.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

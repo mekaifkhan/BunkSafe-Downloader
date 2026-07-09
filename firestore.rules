@@ -1,0 +1,30 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Global safety net - default deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+    
+    // Downloads stats collection
+    match /downloads/{docId} {
+      // Publicly readable so visitors can see the download count
+      allow read: if docId == 'stats';
+      
+      // Permit creation of the stats document with a non-negative integer
+      allow create: if docId == 'stats'
+        && request.resource.data.totalDownloads is int
+        && request.resource.data.totalDownloads >= 0
+        && request.resource.data.keys().hasAll(['totalDownloads'])
+        && request.resource.data.keys().size() == 1;
+        
+      // ONLY allow updating by incrementing totalDownloads by exactly 1.
+      // This prevents spoofing or tampering with other fields.
+      allow update: if docId == 'stats'
+        && request.resource.data.totalDownloads is int
+        && request.resource.data.totalDownloads == resource.data.totalDownloads + 1
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['totalDownloads']);
+    }
+  }
+}

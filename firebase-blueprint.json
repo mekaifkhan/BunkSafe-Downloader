@@ -1,0 +1,22 @@
+{
+  "entities": {
+    "downloadStats": {
+      "title": "Download Stats",
+      "description": "Statistics tracking total downloads for BunkSafe APK",
+      "type": "object",
+      "properties": {
+        "totalDownloads": {
+          "type": "integer",
+          "description": "Total count of downloads"
+        }
+      },
+      "required": ["totalDownloads"]
+    }
+  },
+  "firestore": {
+    "/downloads/{docId}": {
+      "schema": "downloadStats",
+      "description": "Statistics document storing total downloads count"
+    }
+  }
+}
