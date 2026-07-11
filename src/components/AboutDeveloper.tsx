@@ -79,7 +79,7 @@ export default function AboutDeveloper() {
                   Kaif Ahmad Khan
                   <Sparkles className="w-4 h-4 text-green-400" />
                 </h3>
-                <p className="text-xs text-slate-400 font-mono mt-0.5">@kaifahmadkhan</p>
+                <p className="text-xs text-slate-400 font-mono mt-0.5">@me_kaifkhan</p>
               </div>
             </div>
 
@@ -125,7 +125,7 @@ export default function AboutDeveloper() {
               </a>
 
               <a
-                href="https://instagram.com/kaifahmadkhan"
+                href="https://instagram.com/me_kaifkhan"
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => {

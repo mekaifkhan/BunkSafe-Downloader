@@ -5,10 +5,10 @@ import {
   ShieldCheck, 
   Share2, 
   Link2, 
-  Github, 
   Award,
   Sparkles,
-  Users
+  Users,
+  Instagram
 } from "lucide-react";
 import { motion } from "motion/react";
 import { apkConfig } from "../config/apkConfig";
@@ -64,9 +64,13 @@ export default function Hero({
             <h1 className="text-4xl sm:text-6xl font-black tracking-tight text-white leading-tight font-sans">
               Bunk<span className="text-green-500 relative">Safe<span className="absolute bottom-1.5 left-0 w-full h-1 bg-green-500/20 rounded-md"></span></span>
             </h1>
-            <h2 className="text-xl sm:text-2xl font-bold tracking-wide text-slate-300 mt-2">
-              Smart Attendance Tracker for College Students
-            </h2>
+            <div className="flex flex-wrap items-center gap-2 mt-2">
+              <span className="text-xs font-bold text-green-400 bg-green-500/10 px-2 py-1 rounded-md border border-green-500/10 uppercase tracking-widest font-mono">By Kaif Khan</span>
+              <span className="text-slate-500 text-xs hidden sm:inline">•</span>
+              <h2 className="text-base sm:text-lg font-bold text-slate-300">
+                Smart Attendance Tracker for College Students
+              </h2>
+            </div>
           </motion.div>
 
           {/* Description */}
@@ -136,12 +140,20 @@ export default function Hero({
               <Link2 className="w-4 h-4" /> Copy Link
             </button>
             <a 
-              href="https://github.com/kaifahmadkhan/BunkSafe" 
+              href="https://instagram.com/bunksafeapp" 
               target="_blank" 
-              rel="noopener noreferrer" 
+              rel="noopener noreferrer"
+              onClick={() => {
+                try {
+                  import("../firebase").then(m => m.incrementInstagram());
+                } catch (e) {
+                  console.error(e);
+                }
+              }}
               className="flex items-center gap-1.5 hover:text-green-400 transition"
+              title="Official Instagram"
             >
-              <Github className="w-4 h-4" /> Source Code
+              <Instagram className="w-4 h-4" /> Instagram @bunksafeapp
             </a>
           </motion.div>
 

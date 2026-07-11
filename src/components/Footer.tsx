@@ -3,11 +3,11 @@ import {
   ShieldCheck, 
   Scale, 
   Mail, 
-  Github, 
   X, 
   CheckCircle2, 
   Sparkles,
-  ExternalLink
+  ExternalLink,
+  Instagram
 } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 
@@ -59,14 +59,21 @@ export default function Footer() {
           >
             <Mail className="w-4 h-4 text-slate-500" /> Support Email
           </a>
-          
+
           <a 
-            href="https://github.com/kaifahmadkhan/BunkSafe" 
+            href="https://instagram.com/bunksafeapp" 
             target="_blank" 
-            rel="noopener noreferrer" 
+            rel="noopener noreferrer"
+            onClick={() => {
+              try {
+                import("../firebase").then(m => m.incrementInstagram());
+              } catch (e) {
+                console.error(e);
+              }
+            }}
             className="hover:text-green-400 transition flex items-center gap-1.5"
           >
-            <Github className="w-4 h-4 text-slate-500" /> GitHub Source
+            <Instagram className="w-4 h-4 text-slate-500" /> @bunksafeapp
           </a>
         </div>
 

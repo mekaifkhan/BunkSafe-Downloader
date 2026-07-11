@@ -17,7 +17,7 @@ export interface ApkMetadata {
 export const apkConfig: ApkMetadata = {
   version: "v1.2.4",
   releaseDate: "July 08, 2026",
-  fileSize: "5.8 MB",
+  fileSize: "12.8 MB",
   minAndroidVersion: "Android 8.0 (Oreo) and above",
   // We can point to a local file path that is easy to replace, or a GitHub release URL
   downloadUrl: "/apk/BunkSafe.apk",
