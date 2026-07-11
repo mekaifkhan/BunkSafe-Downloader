@@ -14,16 +14,31 @@ import Footer from "./components/Footer";
 
 import DownloadProgress from "./components/DownloadProgress";
 import Toast from "./components/Toast";
+import AdminDashboard from "./components/AdminDashboard";
 
 // Configuration & Utilities
 import { apkConfig } from "./config/apkConfig";
 import { getDownloadCount, incrementDownloadCount } from "./lib/firebase";
 import { initializeGA, trackEvent } from "./lib/analytics";
+import { 
+  incrementVisit, 
+  incrementAPKDownload, 
+  incrementCopyLink, 
+  trackUniqueVisitor, 
+  updatePresence, 
+  listenToLiveUsers 
+} from "./firebase";
 
 export default function App() {
+  // Navigation / Routing state for /admin
+  const [currentView, setCurrentView] = useState<"home" | "admin">(() => {
+    return typeof window !== "undefined" && window.location.pathname === "/admin" ? "admin" : "home";
+  });
+
   // Stats state
   const [totalDownloads, setTotalDownloads] = useState<number>(1428);
   const [isLoadingDownloads, setIsLoadingDownloads] = useState<boolean>(true);
+  const [liveUsers, setLiveUsers] = useState<number>(1);
 
   // Modal / UX state
   const [isDownloading, setIsDownloading] = useState(false);
@@ -36,6 +51,21 @@ export default function App() {
   // PWA Install prompt state
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
   const [showInstallBtn, setShowInstallBtn] = useState(false);
+
+  // Handle popstate for /admin route transitions cleanly
+  useEffect(() => {
+    const handlePopState = () => {
+      setCurrentView(window.location.pathname === "/admin" ? "admin" : "home");
+    };
+    window.addEventListener("popstate", handlePopState);
+    return () => window.removeEventListener("popstate", handlePopState);
+  }, []);
+
+  const navigateTo = (view: "home" | "admin") => {
+    setCurrentView(view);
+    const path = view === "admin" ? "/admin" : "/";
+    window.history.pushState({}, "", path);
+  };
 
   // Initialize and load Firebase download count stats on mount
   useEffect(() => {
@@ -59,7 +89,22 @@ export default function App() {
     };
     fetchDownloads();
 
-    // 3. Handle PWA BeforeInstallPrompt
+    // 3. Telemetry statistics increments
+    incrementVisit();
+    trackUniqueVisitor();
+
+    // 4. Live presence heartbeat updates (run every 30 seconds)
+    updatePresence();
+    const presenceInterval = setInterval(() => {
+      updatePresence();
+    }, 30000);
+
+    // 5. Live users realtime subscription
+    const unsubscribeLive = listenToLiveUsers((count) => {
+      setLiveUsers(count);
+    });
+
+    // 6. Handle PWA BeforeInstallPrompt
     const handleInstallPrompt = (e: Event) => {
       e.preventDefault();
       setDeferredPrompt(e);
@@ -70,6 +115,8 @@ export default function App() {
 
     return () => {
       window.removeEventListener("beforeinstallprompt", handleInstallPrompt);
+      clearInterval(presenceInterval);
+      unsubscribeLive();
     };
   }, []);
 
@@ -83,8 +130,11 @@ export default function App() {
   const handleDownloadApk = async () => {
     setIsDownloading(true);
     trackEvent("apk_download_initiated", { version: apkConfig.version });
+    
+    // Log new Firebase APK Download telemetry
+    incrementAPKDownload();
 
-    // Increment download metrics in Firebase Firestore
+    // Increment legacy download metrics in Firebase Firestore (downloads/stats)
     try {
       const newCount = await incrementDownloadCount();
       setTotalDownloads(newCount);
@@ -115,6 +165,9 @@ export default function App() {
     navigator.clipboard.writeText(fullUrl);
     triggerToast("APK Download link copied to clipboard!", "success");
     trackEvent("copy_apk_link", { url: fullUrl });
+
+    // Record copy link telemetry in Firestore
+    incrementCopyLink();
   };
 
   // Web sharing API
@@ -134,6 +187,9 @@ export default function App() {
         navigator.clipboard.writeText(window.location.href);
         triggerToast("Website URL copied for sharing!", "success");
         trackEvent("share_website_fallback_copy");
+        
+        // Treat copying share URL as copy link metric too
+        incrementCopyLink();
       }
     } catch (err) {
       console.warn("Share operation cancelled or not supported:", err);
@@ -150,6 +206,11 @@ export default function App() {
     setShowInstallBtn(false);
   };
 
+  // Render Admin Dashboard layout if route matches /admin
+  if (currentView === "admin") {
+    return <AdminDashboard onBackToHome={() => navigateTo("home")} />;
+  }
+
   return (
     <div className="min-h-screen bg-[#09090b] text-slate-200 flex flex-col font-sans selection:bg-green-500/30 selection:text-green-300">
       
@@ -160,6 +221,7 @@ export default function App() {
         onDownloadClick={handleDownloadApk}
         onShareClick={handleShareWebsite}
         onCopyLinkClick={handleCopyApkLink}
+        liveUsers={liveUsers}
       />
 
       <Features />

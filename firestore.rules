@@ -20,11 +20,23 @@ service cloud.firestore {
         && request.resource.data.keys().size() == 1;
         
       // ONLY allow updating by incrementing totalDownloads by exactly 1.
-      // This prevents spoofing or tampering with other fields.
       allow update: if docId == 'stats'
         && request.resource.data.totalDownloads is int
         && request.resource.data.totalDownloads == resource.data.totalDownloads + 1
         && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['totalDownloads']);
+    }
+
+    // Website general stats
+    match /stats/{docId} {
+      // Allow public read and write so anyone can increment their actions/clicks dynamically
+      allow read: if true;
+      allow write: if docId == 'website';
+    }
+
+    // User presence
+    match /presence/{docId} {
+      // Allow read and write for tracking dynamic visitor counts
+      allow read, write: if true;
     }
   }
 }

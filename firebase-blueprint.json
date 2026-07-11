@@ -11,12 +11,44 @@
         }
       },
       "required": ["totalDownloads"]
+    },
+    "websiteStats": {
+      "title": "Website Stats",
+      "description": "General stats counters for page clicks and visitors",
+      "type": "object",
+      "properties": {
+        "totalVisits": { "type": "integer" },
+        "uniqueVisitors": { "type": "integer" },
+        "apkDownloads": { "type": "integer" },
+        "webAppClicks": { "type": "integer" },
+        "instagramClicks": { "type": "integer" },
+        "telegramClicks": { "type": "integer" },
+        "copyLinkClicks": { "type": "integer" },
+        "lastVisit": { "type": "string" }
+      }
+    },
+    "userPresence": {
+      "title": "User Presence",
+      "description": "Tracking real-time active users on the site",
+      "type": "object",
+      "properties": {
+        "online": { "type": "boolean" },
+        "lastSeen": { "type": "string" }
+      }
     }
   },
   "firestore": {
     "/downloads/{docId}": {
       "schema": "downloadStats",
       "description": "Statistics document storing total downloads count"
+    },
+    "/stats/{docId}": {
+      "schema": "websiteStats",
+      "description": "Website engagement stats counters"
+    },
+    "/presence/{docId}": {
+      "schema": "userPresence",
+      "description": "Realtime user presence entries"
     }
   }
 }

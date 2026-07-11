@@ -160,7 +160,14 @@ export default function SpecialFeatures() {
         <div className="flex justify-center mb-10">
           <div className="bg-[#18181b]/60 p-1.5 border border-white/5 rounded-xl flex gap-1 backdrop-blur-sm">
             <button
-              onClick={() => setActiveTab("combi")}
+              onClick={() => {
+                setActiveTab("combi");
+                try {
+                  import("../firebase").then(m => m.incrementWebAppClick());
+                } catch (e) {
+                  console.error(e);
+                }
+              }}
               className={`flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-semibold transition-all duration-300 ${
                 activeTab === "combi"
                   ? "bg-green-500 text-black shadow-lg shadow-green-500/10"
@@ -171,7 +178,14 @@ export default function SpecialFeatures() {
               Monthly Combi Attendance
             </button>
             <button
-              onClick={() => setActiveTab("bunk")}
+              onClick={() => {
+                setActiveTab("bunk");
+                try {
+                  import("../firebase").then(m => m.incrementWebAppClick());
+                } catch (e) {
+                  console.error(e);
+                }
+              }}
               className={`flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-semibold transition-all duration-300 ${
                 activeTab === "bunk"
                   ? "bg-green-500 text-black shadow-lg shadow-green-500/10"

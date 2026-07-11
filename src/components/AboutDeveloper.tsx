@@ -7,7 +7,8 @@ import {
   Send, 
   Check, 
   Award,
-  Sparkles
+  Sparkles,
+  Instagram
 } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 
@@ -121,6 +122,40 @@ export default function AboutDeveloper() {
                 title="Developer GitHub Profile"
               >
                 <Github className="w-4.5 h-4.5 text-green-400" />
+              </a>
+
+              <a
+                href="https://instagram.com/kaifahmadkhan"
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => {
+                  try {
+                    import("../firebase").then(m => m.incrementInstagram());
+                  } catch (e) {
+                    console.error(e);
+                  }
+                }}
+                className="bg-[#09090b] hover:bg-zinc-900 text-slate-300 hover:text-white border border-white/5 hover:border-zinc-850 rounded-xl p-2.5 text-xs flex items-center justify-center transition"
+                title="Developer Instagram Profile"
+              >
+                <Instagram className="w-4.5 h-4.5 text-green-400" />
+              </a>
+
+              <a
+                href="https://t.me/kaifahmadkhan"
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => {
+                  try {
+                    import("../firebase").then(m => m.incrementTelegram());
+                  } catch (e) {
+                    console.error(e);
+                  }
+                }}
+                className="bg-[#09090b] hover:bg-zinc-900 text-slate-300 hover:text-white border border-white/5 hover:border-zinc-850 rounded-xl p-2.5 text-xs flex items-center justify-center transition"
+                title="Community Telegram Profile"
+              >
+                <Send className="w-4.5 h-4.5 text-green-400" />
               </a>
             </div>
 

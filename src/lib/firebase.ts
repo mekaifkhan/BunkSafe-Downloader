@@ -1,4 +1,4 @@
-import { initializeApp } from "firebase/app";
+import { initializeApp, getApps, getApp } from "firebase/app";
 import { 
   getFirestore, 
   doc, 
@@ -19,8 +19,11 @@ const firebaseConfig = {
   appId: "1:128163725192:web:dffa6d4c2852f9a318c43d"
 };
 
-// Initialize Firebase App
-const app = initializeApp(firebaseConfig);
+// Initialize Named Firebase App to avoid conflicts with Vercel/BunkSafe main [DEFAULT] app
+const appName = "shining-app";
+const app = getApps().find(a => a.name === appName)
+  ? getApp(appName)
+  : initializeApp(firebaseConfig, appName);
 
 // Initialize Firestore targeting our custom database ID
 export const db = getFirestore(app, "ai-studio-795c8557-098d-4d18-97e1-b6ab3143e2eb");

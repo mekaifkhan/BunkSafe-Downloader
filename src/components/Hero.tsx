@@ -19,6 +19,7 @@ interface HeroProps {
   onDownloadClick: () => void;
   onShareClick: () => void;
   onCopyLinkClick: () => void;
+  liveUsers: number;
 }
 
 export default function Hero({ 
@@ -26,7 +27,8 @@ export default function Hero({
   isLoadingDownloads, 
   onDownloadClick, 
   onShareClick, 
-  onCopyLinkClick 
+  onCopyLinkClick,
+  liveUsers
 }: HeroProps) {
   
   return (
@@ -283,7 +285,7 @@ export default function Hero({
 
                   {/* Bottom active indicators */}
                   <div className="flex justify-between items-center mt-2 pt-1.5 border-t border-white/5 text-[6px] text-slate-500 font-bold uppercase tracking-wider shrink-0">
-                    <span className="flex items-center gap-1"><span className="w-1 h-1 bg-green-500 rounded-full"></span> 450 LIVE USERS</span>
+                    <span className="flex items-center gap-1"><span className="w-1 h-1 bg-green-500 rounded-full animate-pulse"></span> {liveUsers} LIVE USERS</span>
                     <span className="text-[6.5px] text-slate-400">HOME PREVIEW</span>
                   </div>
                 </div>
