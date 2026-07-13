@@ -51,8 +51,8 @@ export default function Hero({
             transition={{ duration: 0.5 }}
             className="inline-flex items-center gap-2 px-3 py-1 bg-green-500/10 border border-green-500/20 text-green-400 rounded-full text-xs font-bold uppercase tracking-widest"
           >
-            <Award className="w-3.5 h-3.5" />
-            <span>v{apkConfig.version} • Android Hub</span>
+            <Sparkles className="w-3.5 h-3.5 text-green-400 animate-pulse" />
+            <span>APK v{apkConfig.version} is Live! Download Now</span>
           </motion.div>
 
           {/* Heading */}

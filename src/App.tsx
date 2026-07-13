@@ -15,6 +15,7 @@ import Footer from "./components/Footer";
 import DownloadProgress from "./components/DownloadProgress";
 import Toast from "./components/Toast";
 import AdminDashboard from "./components/AdminDashboard";
+import InAppBrowserModal, { isInAppBrowser } from "./components/InAppBrowserModal";
 
 // Configuration & Utilities
 import { apkConfig } from "./config/apkConfig";
@@ -42,6 +43,7 @@ export default function App() {
 
   // Modal / UX state
   const [isDownloading, setIsDownloading] = useState(false);
+  const [showWebviewModal, setShowWebviewModal] = useState(false);
 
   // Toast state
   const [toastMessage, setToastMessage] = useState("");
@@ -69,6 +71,11 @@ export default function App() {
 
   // Initialize and load Firebase download count stats on mount
   useEffect(() => {
+    // Check if opened inside an in-app browser (e.g. Instagram webview)
+    if (isInAppBrowser()) {
+      setShowWebviewModal(true);
+    }
+
     // 1. Initialize Google Analytics
     try {
       initializeGA();
@@ -128,6 +135,10 @@ export default function App() {
 
   // Click handler to initiate APK download
   const handleDownloadApk = async () => {
+    if (isInAppBrowser()) {
+      setShowWebviewModal(true);
+      return;
+    }
     setIsDownloading(true);
     trackEvent("apk_download_initiated", { version: apkConfig.version });
     
@@ -278,6 +289,13 @@ export default function App() {
             isOpen={isDownloading}
             onClose={() => setIsDownloading(false)}
             onComplete={handleDownloadComplete}
+          />
+        )}
+        {showWebviewModal && (
+          <InAppBrowserModal
+            isOpen={showWebviewModal}
+            onClose={() => setShowWebviewModal(false)}
+            onCopyLink={() => triggerToast("Direct link copied! Paste it in Chrome/Safari.", "info")}
           />
         )}
       </AnimatePresence>
