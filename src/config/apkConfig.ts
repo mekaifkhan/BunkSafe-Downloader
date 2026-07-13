@@ -20,7 +20,7 @@ export const apkConfig: ApkMetadata = {
   fileSize: "12.8 MB",
   minAndroidVersion: "Android 8.0 (Oreo) and above",
   // We can point to a local file path that is easy to replace, or a GitHub release URL
-  downloadUrl: "/apk/BunkSafe.apk",
+  downloadUrl: "/apk/BunkSafe By Kaif Khan.apk",
   changelog: [
     "Smart Attendance Calculator: Simulate different bunking scenarios and instantly see potential attendance percentages.",
     "Quick Attendance Tiles: Toggle presence or absence directly from the home screen.",
