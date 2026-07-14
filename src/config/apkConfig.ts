@@ -15,17 +15,17 @@ export interface ApkMetadata {
 }
 
 export const apkConfig: ApkMetadata = {
-  version: "2.0",
-  releaseDate: "July 13, 2026",
-  fileSize: "17.18 MB",
+  version: "2.4.0",
+  releaseDate: "July 14, 2026",
+  fileSize: "12.5 MB",
   minAndroidVersion: "Android 8.0 (Oreo) and above",
   // We can point to a local file path that is easy to replace, or a GitHub release URL
-  downloadUrl: "/apk/BunkSafe By Kaif Khan.apk",
+  downloadUrl: "/BunkSafe By Kaif Khan.apk",
   changelog: [
-    "Stable Release v2.0 is Officially Live! Experience the fully revamped, lightning-fast BunkSafe attendance engine.",
+    "Stable Release v2.4.0 is Officially Live! Experience the fully revamped, lightning-fast BunkSafe attendance engine.",
     "Smart Attendance Calculator: Simulate different bunking scenarios and instantly see potential attendance percentages.",
     "Quick Attendance Tiles: Toggle presence or absence directly from the home screen.",
-    "Performance Optimization: 40% faster startup time and reduced memory usage.",
+    "Performance Optimization: Faster startup time and reduced memory usage.",
     "Privacy Guard: Your data is saved directly on your phone so privacy is fully maintained. We don't keep your data on our servers."
   ]
 };
